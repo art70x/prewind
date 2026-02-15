@@ -26,7 +26,7 @@ program
 
       note(
         `Patterns: ${patterns.length}\nMode: ${
-          options.write ? 'Overwrite' : options.out ? 'Output directory' : 'Dry run'
+          options.write ? 'Overwrite' : (options.out ? 'Output directory' : 'Dry run')
         }`,
         'Summary',
       )
