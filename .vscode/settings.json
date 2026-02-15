@@ -1,0 +1,13 @@
+{
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "tsdown.config.ts": "prettier*, eslint*, .editorconfig, tsdown.config.*.ts",
+    "tsconfig.json": "tsconfig.*.json",
+    "package.json": "pnpm*"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}

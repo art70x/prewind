@@ -1,0 +1,77 @@
+{
+  "name": "prewind",
+  "version": "2.0.0",
+  "description": "A lightweight preprocessor that expands Tailwind shorthand like hover(px-4 py-2) into hover:px-4 hover:py-2.",
+  "keywords": [
+    "cli",
+    "utility",
+    "preprocessor",
+    "shorthand",
+    "tailwindcss",
+    "art70x"
+  ],
+  "homepage": "https://github.com/art70x/Prewind#readme",
+  "bugs": {
+    "url": "https://github.com/art70x/Prewind/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/art70x/Prewind.git"
+  },
+  "license": "MIT",
+  "author": "art70x <art70x@outlook.com>",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "bin": {
+    "prewind": "./dist/bin/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "prebuild": "nr lint:fix && nr type-check",
+    "build": "nr build:browser && nr build:cli",
+    "build:browser": "tsdown -c tsdown.config.ts",
+    "build:cli": "tsdown -c tsdown.config.cli.ts",
+    "dev": "tsdown --watch",
+    "format": "prettier --write --experimental-cli src/",
+    "lint": "eslint . --cache --cache-location .eslintcache",
+    "lint:fix": "eslint --fix --cache --cache-location .eslintcache",
+    "prepublishOnly": "nr build",
+    "test": "vitest",
+    "try": "tsx src/cli.ts",
+    "type-check": "tsc -b"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.0.1",
+    "commander": "^14.0.2",
+    "fast-glob": "^3.3.3"
+  },
+  "devDependencies": {
+    "@antfu/ni": "^28.2.0",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.2.3",
+    "bumpp": "^10.3.2",
+    "eslint": "^10.0.0",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "globals": "^17.3.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-packagejson": "^3.0.0",
+    "tsdown": "^0.20.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.2",
+    "vitest": "^4.0.16"
+  },
+  "packageManager": "pnpm@10.29.3"
+}
