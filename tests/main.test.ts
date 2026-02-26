@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
 import { JSDOM } from 'jsdom'
-import { transform, expandVariants } from '../src/main.js'
+import { describe, expect, it } from 'vitest'
+import { expandVariants, transform } from '../src/main.js'
 
 const htmlTemplate = `
 <div class="grid place-items-center bg-blue-50 dark(bg-blue-950)">
@@ -11,58 +11,32 @@ const htmlTemplate = `
 describe('expandVariants()', () => {
   it('expands simple variant group', () => {
     const result = expandVariants('hover(bg-blue-500 text-white)')
-    expect(result).toEqual([
-      'hover:bg-blue-500',
-      'hover:text-white',
-    ])
+    expect(result).toEqual(['hover:bg-blue-500', 'hover:text-white'])
   })
 
   it('expands nested variant groups', () => {
     const result = expandVariants('dark(hover(bg-blue-400 text-black))')
-    expect(result).toEqual([
-      'dark:hover:bg-blue-400',
-      'dark:hover:text-black',
-    ])
+    expect(result).toEqual(['dark:hover:bg-blue-400', 'dark:hover:text-black'])
   })
 
   it('handles deep nesting (3 levels)', () => {
-    const result = expandVariants(
-      'dark(group(hover(bg-blue-500)))'
-    )
-    expect(result).toEqual([
-      'dark:group:hover:bg-blue-500',
-    ])
+    const result = expandVariants('dark(group(hover(bg-blue-500)))')
+    expect(result).toEqual(['dark:group:hover:bg-blue-500'])
   })
 
   it('handles multiple variant groups in one string', () => {
-    const result = expandVariants(
-      'hover(bg-blue-500) focus(text-white)'
-    )
-    expect(result).toEqual([
-      'hover:bg-blue-500',
-      'focus:text-white',
-    ])
+    const result = expandVariants('hover(bg-blue-500) focus(text-white)')
+    expect(result).toEqual(['hover:bg-blue-500', 'focus:text-white'])
   })
 
   it('preserves normal classes with variant groups', () => {
-    const result = expandVariants(
-      'px-4 py-2 hover(bg-blue-500)'
-    )
-    expect(result).toEqual([
-      'px-4',
-      'py-2',
-      'hover:bg-blue-500',
-    ])
+    const result = expandVariants('px-4 py-2 hover(bg-blue-500)')
+    expect(result).toEqual(['px-4', 'py-2', 'hover:bg-blue-500'])
   })
 
   it('handles extra whitespace inside groups', () => {
-    const result = expandVariants(
-      'hover(   bg-blue-500   text-white   )'
-    )
-    expect(result).toEqual([
-      'hover:bg-blue-500',
-      'hover:text-white',
-    ])
+    const result = expandVariants('hover(   bg-blue-500   text-white   )')
+    expect(result).toEqual(['hover:bg-blue-500', 'hover:text-white'])
   })
 
   it('returns empty array for empty string', () => {
@@ -136,9 +110,7 @@ describe('transform()', () => {
     const dom = new JSDOM(transformed)
     const div = dom.window.document.querySelector('div')
 
-    const occurrences = [...div!.classList].filter(
-      c => c === 'hover:text-blue-500'
-    )
+    const occurrences = [...div!.classList].filter((c) => c === 'hover:text-blue-500')
 
     expect(occurrences.length).toBe(1)
   })
