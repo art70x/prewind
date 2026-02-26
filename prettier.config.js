@@ -4,5 +4,5 @@ export default {
   singleQuote: true,
   tabWidth: 2,
   printWidth: 100,
-  plugins: ['prettier-plugin-packagejson'],
+  plugins: ['prettier-plugin-packagejson', 'prettier-plugin-organize-imports'],
 }
