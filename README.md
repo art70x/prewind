@@ -27,13 +27,13 @@ and automatically transform them into:
 
 ## ✨ Features
 
-* Expand Tailwind shorthand groups automatically
-* Supports **nested variants** (`hover()`, `dark()`, `group-hover()`, `peer-focus()`, `not()`, etc.)
-* Fast, zero-runtime — designed for build-time processing
-* CLI-friendly — runs before Prettier or dev servers
-* Fully **verbose logging** with `-v`/`--verbose` option
-* Colored console output with `picocolors`
-* Works in **Node, CLI, and browser environments**
+- Expand Tailwind shorthand groups automatically
+- Supports **nested variants** (`hover()`, `dark()`, `group-hover()`, `peer-focus()`, `not()`, etc.)
+- Fast, zero-runtime — designed for build-time processing
+- CLI-friendly — runs before Prettier or dev servers
+- Fully **verbose logging** with `-v`/`--verbose` option
+- Colored console output with `picocolors`
+- Works in **Node, CLI, and browser environments**
 
 ---
 
@@ -211,9 +211,9 @@ prewind src/**/*.html              # Run globally
 
 ## 🧭 Roadmap
 
-* [x] v2.1: Verbose logging, colored CLI, safe `--out` handling
-* [ ] Config file support (`prewind.config.json`)
-* [ ] Add `--dry` and `--silent` modes
+- [x] v2.1: Verbose logging, colored CLI, safe `--out` handling
+- [ ] Config file support (`prewind.config.json`)
+- [ ] Add `--dry` and `--silent` modes
 
 ---
 
@@ -224,4 +224,4 @@ prewind src/**/*.html              # Run globally
 
 ---
 
-> 🌀 *Prewind — write less, expand more*
+> 🌀 _Prewind — write less, expand more_
