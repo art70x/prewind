@@ -27,11 +27,13 @@ and automatically transform them into:
 
 ## ✨ Features
 
-- Expand Tailwind shorthand groups automatically
-- Supports **nested variants** (`hover()`, `dark()`, `group-hover()`, `peer-focus()`, `not()`, etc.)
-- Fast, zero-runtime — designed for build-time processing
-- CLI-friendly — runs before Prettier or dev servers
-- Works in **Node, CLI, and browser environments**
+* Expand Tailwind shorthand groups automatically
+* Supports **nested variants** (`hover()`, `dark()`, `group-hover()`, `peer-focus()`, `not()`, etc.)
+* Fast, zero-runtime — designed for build-time processing
+* CLI-friendly — runs before Prettier or dev servers
+* Fully **verbose logging** with `-v`/`--verbose` option
+* Colored console output with `picocolors`
+* Works in **Node, CLI, and browser environments**
 
 ---
 
@@ -55,21 +57,25 @@ pnpm add -g prewind
 
 ## ⚙️ CLI Options
 
-| Flag              | Description                                |
-| ----------------- | ------------------------------------------ |
-| `<patterns...>`   | File path(s) or glob pattern(s) to process |
-| `-w, --write`     | Overwrite files in place                   |
-| `-o, --out <dir>` | Output transformed files into a directory  |
-| `-h, --help`      | Show CLI help                              |
+| Flag                  | Description                                         |
+| --------------------- | --------------------------------------------------- |
+| `<patterns...>`       | File path(s) or glob pattern(s) to process          |
+| `-w, --write`         | Overwrite files in place                            |
+| `-o, --out <dir>`     | Output transformed files into a directory or file   |
+| `-v, --verbose`       | Show detailed file processing logs (colored output) |
+| `--dry-run`           | Preview changes without writing (default)           |
+| `--ignore <patterns>` | Glob patterns to ignore                             |
+| `-h, --help`          | Show CLI help                                       |
 
 ---
 
 ## 🚀 CLI Usage
 
-### Print to console (dry run)
+### Dry-run / Preview (default)
 
 ```bash
 prewind src/test.html
+prewind "src/**/*.html" --dry-run
 ```
 
 Outputs transformed files to console without modifying them.
@@ -78,13 +84,27 @@ Outputs transformed files to console without modifying them.
 
 ```bash
 prewind -w src/test.html
+prewind src/**/*.html --write
 ```
+
+Prompts confirmation before overwriting files.
 
 ### Output to a directory
 
 ```bash
 prewind src/**/*.html -o dist
+prewind src/test.html -o out.html
 ```
+
+### Verbose Mode (colored)
+
+```bash
+prewind src/**/*.html --dry-run -v
+prewind src/**/*.html --write -v
+prewind src/**/*.html -o dist -v
+```
+
+Prints `Changed`/`Unchanged` for each file, showing input → output paths in **colored console**.
 
 ---
 
@@ -108,8 +128,6 @@ Prewind also works in the browser via ESM modules.
 </script>
 ```
 
----
-
 ### Transforming DOM Elements
 
 ```html
@@ -123,8 +141,6 @@ Prewind also works in the browser via ESM modules.
   // <div id="btn" class="hover:bg-blue-500 hover:text-white"></div>
 </script>
 ```
-
----
 
 ### Watching DOM Changes
 
@@ -195,8 +211,9 @@ prewind src/**/*.html              # Run globally
 
 ## 🧭 Roadmap
 
-- [ ] Add config file support (`prewind.config.json`)
-- [ ] Add `--dry` and `--silent` modes
+* [x] v2.1: Verbose logging, colored CLI, safe `--out` handling
+* [ ] Config file support (`prewind.config.json`)
+* [ ] Add `--dry` and `--silent` modes
 
 ---
 
@@ -207,4 +224,4 @@ prewind src/**/*.html              # Run globally
 
 ---
 
-> 🌀 _Prewind — write less, expand more_
+> 🌀 *Prewind — write less, expand more*
