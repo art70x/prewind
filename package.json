@@ -1,6 +1,6 @@
 {
   "name": "prewind",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A lightweight preprocessor that expands Tailwind shorthand like hover(px-4 py-2) into hover:px-4 hover:py-2.",
   "keywords": [
     "cli",

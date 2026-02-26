@@ -6,7 +6,7 @@ import process from 'node:process'
 import pc from 'picocolors'
 import { processFiles, type ProcessResult } from './utils/processor.js'
 
-const VERSION = '2.1.0'
+const VERSION = '2.1.1'
 
 /**
  * Resolve mode and enforce only one mode at a time
