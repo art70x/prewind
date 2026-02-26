@@ -17,6 +17,9 @@ importers:
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
       '@antfu/ni':
         specifier: ^28.2.0

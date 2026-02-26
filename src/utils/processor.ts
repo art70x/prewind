@@ -1,93 +1,129 @@
 import fg from 'fast-glob'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { spinner, note, log } from '@clack/prompts'
-import { ensureDirectory } from '../utils/fs-utilities.js'
 import { transform } from '../main.js'
+import { ensureDirectory } from './fs-utilities.js'
 
+export type ProcessMode = 'write' | 'out' | 'dry-run'
+
+export interface ProcessOptions {
+  mode: ProcessMode
+  out?: string
+  ignore?: string[]
+  verbose?: boolean
+  concurrency?: number
+}
+
+export interface ProcessResult {
+  filesScanned: number
+  filesChanged: number
+  unchanged: number
+  replacements: number
+  commit?: () => Promise<void>
+}
+
+/**
+ * Count replacements (naive heuristic based on string length difference)
+ * @param before - original file content
+ * @param after - transformed content
+ */
+function countReplacements(before: string, after: string): number {
+  return before === after ? 0 : Math.abs(after.length - before.length)
+}
+
+/**
+ * Process files matching given patterns and transform them using Prewind
+ * @param patterns - Glob patterns or file paths to process
+ * @param options - Processing options
+ * @returns ProcessResult including metrics and optional commit function
+ */
 export async function processFiles(
   patterns: string[],
-  options: { write?: boolean; out?: string; debug?: boolean },
-) {
-  const start = performance.now()
-
+  options: ProcessOptions,
+): Promise<ProcessResult> {
+  // Resolve files
   const files = await fg(patterns, {
     absolute: true,
     onlyFiles: true,
+    ignore: options.ignore ?? [],
   })
 
-  if (files.length === 0) {
-    throw new Error('No files matched the given pattern(s).')
-  }
+  if (files.length === 0) throw new Error('No files matched the given pattern(s).')
+  if (options.mode === 'out' && !options.out)
+    throw new Error('--out requires a directory or file path.')
 
-  if (options.write && options.out) {
-    throw new Error('Cannot use --write and --out together.')
-  }
+  const pendingWrites: Array<() => Promise<void>> = []
+  let filesChanged = 0
+  let unchanged = 0
+  let replacements = 0
+  const concurrency = options.concurrency ?? 8
+  const queue = [...files].toSorted() // ESLint-safe deterministic order
 
-  if (options.out && files.length > 1 && path.extname(options.out)) {
-    throw new Error('When processing multiple files, --out must be a directory.')
-  }
+  /**
+   * Worker function for concurrent processing
+   */
+  async function worker() {
+    while (queue.length > 0) {
+      const file = queue.pop()
+      if (!file) return
 
-  log.info(`Found ${files.length} file(s).`)
-
-  let changedCount = 0
-  let unchangedCount = 0
-
-  for (const file of files) {
-    const relativePath = path.relative(process.cwd(), file)
-
-    const s = spinner()
-    s.start(`Processing ${relativePath}`)
-
-    try {
+      const relativePath = path.relative(process.cwd(), file)
       const raw = await fs.readFile(file, 'utf8')
       const transformed = transform(raw)
 
+      // ---- SAFE TARGET ----
+      let target: string
+      if (options.mode === 'out') {
+        if (!options.out) throw new Error('--out requires a directory or file path.')
+        target =
+          files.length === 1 && path.extname(options.out)
+            ? options.out
+            : path.join(options.out, relativePath)
+      } else {
+        target = file
+      }
+
+      // Verbose logging for all modes
+      if (options.verbose) {
+        console.log(`${raw === transformed ? 'Unchanged' : 'Changed'}: ${relativePath} → ${target}`)
+      }
+
       if (raw === transformed) {
-        unchangedCount++
-        s.stop(`No changes — ${relativePath}`)
+        unchanged++
         continue
       }
 
-      if (options.write) {
-        await fs.writeFile(file, transformed, 'utf8')
-        s.stop(`Updated ${relativePath}`)
-      } else if (options.out) {
-        const outPath =
-          files.length === 1 ? path.resolve(options.out) : path.join(options.out, relativePath)
+      filesChanged++
+      replacements += countReplacements(raw, transformed)
 
-        await ensureDirectory(path.dirname(outPath))
-        await fs.writeFile(outPath, transformed, 'utf8')
-        s.stop(`Wrote ${path.relative(process.cwd(), outPath)}`)
-      } else {
-        s.stop(`Preview ${relativePath}`)
-        console.log('\n' + transformed + '\n')
+      if (options.mode === 'write') {
+        pendingWrites.push(() => fs.writeFile(file, transformed, 'utf8'))
+      } else if (options.mode === 'out') {
+        pendingWrites.push(async () => {
+          await ensureDirectory(path.dirname(target))
+          await fs.writeFile(target, transformed, 'utf8')
+        })
       }
-
-      changedCount++
-    } catch (error) {
-      s.stop(`Failed ${relativePath}`)
-      throw error
     }
   }
 
-  const duration = ((performance.now() - start) / 1000).toFixed(2)
+  // Run workers concurrently
+  await Promise.all(Array.from({ length: concurrency }, worker))
 
-  let mode: string
-  if (options.write) {
-    mode = 'Overwrite'
-  } else if (options.out) {
-    mode = files.length === 1 ? `Output → ${options.out}` : `Output dir → ${options.out}`
-  } else {
-    mode = 'Dry run'
+  /**
+   * Commit function to execute queued writes
+   */
+  async function commit() {
+    for (const write of pendingWrites) {
+      await write()
+    }
   }
 
-  note(
-    `Files scanned : ${files.length}
-Files changed : ${changedCount}
-Unchanged     : ${unchangedCount}
-Mode          : ${mode}
-Time          : ${duration}s`,
-    'Summary',
-  )
+  return {
+    filesScanned: files.length,
+    filesChanged,
+    unchanged,
+    replacements,
+    commit: options.mode === 'dry-run' ? undefined : commit,
+  }
 }
