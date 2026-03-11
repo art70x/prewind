@@ -2,8 +2,8 @@
 
 > Write less, expand more.
 
-[![NPM Downloads](https://img.shields.io/npm/dm/prewind?style=flat&colorA=030812&colorB=2461db)](https://www.npmjs.com/package/prewind)
-[![NPM Version](https://img.shields.io/npm/v/prewind?style=flat&colorA=030812&colorB=2461db)](https://www.npmjs.com/package/prewind)
+[![NPM Downloads](https://img.shields.io/npm/dm/prewind?style=flat&colorA=030812&colorB=2461db)](https://npmx.dev/package/prewind)
+[![NPM Version](https://img.shields.io/npm/v/prewind?style=flat&colorA=030812&colorB=2461db)](https://npmx.dev/package/prewind)
 [![GitHub Stars](https://img.shields.io/github/stars/art70x/prewind?style=flat&colorA=030812&colorB=2461db)](https://github.com/art70x/prewind/stargazers)
 [![License](https://img.shields.io/github/license/art70x/prewind?style=flat&colorA=030812&colorB=2461db)](https://github.com/art70x/prewind/blob/main/LICENSE)
 
