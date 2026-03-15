@@ -3,33 +3,23 @@
   "version": "2.1.1",
   "description": "A lightweight preprocessor that expands Tailwind shorthand like hover(px-4 py-2) into hover:px-4 hover:py-2.",
   "keywords": [
+    "art70x",
     "cli",
-    "utility",
     "preprocessor",
     "shorthand",
     "tailwindcss",
-    "art70x"
+    "utility"
   ],
   "homepage": "https://github.com/art70x/Prewind#readme",
   "bugs": {
     "url": "https://github.com/art70x/Prewind/issues"
   },
+  "license": "MIT",
+  "author": "art70x <art70x@outlook.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/art70x/Prewind.git"
   },
-  "license": "MIT",
-  "author": "art70x <art70x@outlook.com>",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/main.d.ts",
-      "import": "./dist/main.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "./dist/main.js",
-  "types": "./dist/main.d.ts",
   "bin": {
     "prewind": "./dist/bin/cli.mjs"
   },
@@ -37,45 +27,62 @@
     "dist",
     "README.md"
   ],
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "prebuild": "nr lint:fix && nr type-check",
     "build": "nr build:browser && nr build:cli",
     "build:browser": "tsdown -c tsdown.config.ts",
     "build:cli": "tsdown -c tsdown.config.cli.ts",
     "dev": "tsdown --watch",
-    "format": "prettier --write --experimental-cli src/",
-    "lint": "eslint . --cache --cache-location .eslintcache",
-    "lint:fix": "eslint --fix --cache --cache-location .eslintcache",
+    "lint": "run-s lint:*",
+    "lint:oxlint": "oxlint . --fix",
+    "lint:eslint": "eslint . --fix --cache",
+    "format": "oxfmt src/",
     "prepublishOnly": "nr build",
+    "release": "bumpp",
     "test": "vitest",
     "try": "tsx src/cli.ts",
-    "type-check": "tsc -b"
+    "type-check": "tsc -b",
+    "up": "taze major -I"
   },
   "dependencies": {
-    "@clack/prompts": "^1.0.1",
-    "commander": "^14.0.2",
+    "@clack/prompts": "^1.1.0",
+    "commander": "^14.0.3",
     "fast-glob": "^3.3.3",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
-    "@antfu/ni": "^28.2.0",
+    "@antfu/ni": "^29.0.0",
     "@eslint/js": "^10.0.1",
     "@types/jsdom": "^28.0.0",
-    "@types/node": "^25.3.1",
-    "bumpp": "^10.3.2",
-    "eslint": "^10.0.2",
+    "@types/node": "^25.5.0",
+    "@typescript/native-preview": "7.0.0-dev.20260315.1",
+    "bumpp": "^11.0.0",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-oxlint": "^1.55.0",
     "eslint-plugin-unicorn": "^63.0.0",
-    "globals": "^17.3.0",
+    "globals": "^17.4.0",
     "jiti": "^2.6.1",
-    "jsdom": "^28.1.0",
-    "prettier": "^3.8.1",
-    "prettier-plugin-organize-imports": "^4.3.0",
-    "prettier-plugin-packagejson": "^3.0.0",
-    "tsdown": "0.21.0-beta.1",
-    "tsx": "^4.20.6",
+    "jsdom": "^29.0.0",
+    "npm-run-all2": "^8.0.4",
+    "oxfmt": "^0.40.0",
+    "oxlint": "^1.55.0",
+    "taze": "^19.10.0",
+    "tsdown": "^0.21.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1",
-    "vitest": "^4.0.16"
+    "typescript-eslint": "^8.57.0",
+    "vitest": "^4.1.0"
   },
-  "packageManager": "pnpm@10.30.0"
+  "packageManager": "pnpm@10.32.1"
 }

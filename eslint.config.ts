@@ -1,8 +1,10 @@
 import js from '@eslint/js'
-import globals from 'globals'
-import { defineConfig, globalIgnores } from 'eslint/config'
-import tseslint from 'typescript-eslint'
+import skipFormatting from 'eslint-config-prettier/flat'
+import pluginOxlint from 'eslint-plugin-oxlint'
 import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -14,4 +16,6 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   eslintPluginUnicorn.configs.recommended,
+  ...pluginOxlint.buildFromOxlintConfigFile('./oxlint.config.ts'),
+  skipFormatting,
 ])

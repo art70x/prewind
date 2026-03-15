@@ -1,13 +1,13 @@
 {
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "tsdown.config.ts": "prettier*, eslint*, .editorconfig, tsdown.config.*.ts",
-    "tsconfig.json": "tsconfig.*.json",
+    "tsdown.config.ts": "eslint*, oxlint*, oxfmt*, .editorconfig, tsdown.config.*.ts",
     "package.json": "pnpm*"
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
+    "source.fixAll": "explicit"
   },
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "oxc.fmt.configPath": "oxfmt.config.ts",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true
 }
