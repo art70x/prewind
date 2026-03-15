@@ -7,7 +7,9 @@ export default defineConfig({
   format: ['esm'],
   sourcemap: true,
   clean: true,
-  dts: true,
+  dts: {
+    tsgo: true,
+  },
   minify: true,
   treeshake: true,
   platform: 'browser',
