@@ -6,5 +6,6 @@
   packages = [
     pkgs.nodejs
     pkgs.pnpm
+    pkgs.ni
   ];
 }

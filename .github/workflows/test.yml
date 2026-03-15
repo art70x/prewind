@@ -1,0 +1,38 @@
+name: Test & Lint
+
+# Trigger on push to any branch and on pull requests
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: ['main']
+
+# cancel in-progress runs on new commits to same PR
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Run Tests and Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - uses: pnpm/action-setup@v4
+        with:
+          cache: true
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint Code
+        run: pnpm lint
+
+      - name: Run Tests
+        run: pnpm test
