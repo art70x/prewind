@@ -1,6 +1,8 @@
-import fg from 'fast-glob'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+
+import fg from 'fast-glob'
+
 import { transform } from '../main.js'
 import { ensureDirectory } from './fs-utilities.js'
 

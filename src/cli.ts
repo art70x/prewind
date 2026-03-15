@@ -1,9 +1,11 @@
 #!/usr/bin/env node
-import { cancel, confirm, intro, note, outro, spinner } from '@clack/prompts'
-import { program } from 'commander'
 import { performance } from 'node:perf_hooks'
 import process from 'node:process'
+
+import { cancel, confirm, intro, note, outro, spinner } from '@clack/prompts'
+import { program } from 'commander'
 import pc from 'picocolors'
+
 import { processFiles, type ProcessResult } from './utils/processor.js'
 
 const VERSION = '2.1.1'
