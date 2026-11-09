@@ -111,4 +111,4 @@ Time          : ${duration}ms
     }
   })
 
-program.parseAsync(process.argv)
+await program.parseAsync(process.argv)

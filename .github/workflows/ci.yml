@@ -7,66 +7,34 @@ on:
     branches: [main]
   merge_group:
 
-# cancel in-progress runs on new commits to same PR
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  types:
-    name: 💪 Type check
+  check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
         with:
           node-version: lts/*
+          cache: pnpm
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+      - run: pnpm install --frozen-lockfile
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Check formatting, lint, and types
+        run: pnpm check
 
-      - name: Run type check
-        run: pnpm type-check
+      - name: Test
+        run: pnpm test
 
-  fix:
-    name: 🧹 Format & Lint
-    runs-on: ubuntu-latest
-    if: github.event_name != 'merge_group'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: lts/*
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint & auto-fix
-        run: pnpm lint
-
-      - name: Format code
-        run: pnpm format
-
-      - name: Commit fixes
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: 'chore(ci): auto format + lint fixes'
-          commit_user_name: github-actions[bot]
-          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Production build
+        run: pnpm build

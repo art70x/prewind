@@ -3,8 +3,12 @@ import { transformElement } from './dom.js'
 export function observeDOM(): MutationObserver {
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-        transformElement(mutation.target as Element)
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'class' &&
+        mutation.target instanceof Element
+      ) {
+        transformElement(mutation.target)
       }
 
       if (mutation.type === 'childList') {

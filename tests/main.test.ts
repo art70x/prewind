@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
+
 import { expandVariants, transform } from '../src/main.js'
 
 const htmlTemplate = `

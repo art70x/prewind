@@ -1,6 +1,6 @@
 {
   "name": "prewind",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A lightweight preprocessor that expands Tailwind shorthand like hover(px-4 py-2) into hover:px-4 hover:py-2.",
   "keywords": [
     "art70x",
@@ -38,51 +38,30 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "prebuild": "nr lint:fix && nr type-check",
     "build": "nr build:browser && nr build:cli",
-    "build:browser": "tsdown -c tsdown.config.ts",
-    "build:cli": "tsdown -c tsdown.config.cli.ts",
-    "dev": "tsdown --watch",
-    "lint": "run-s lint:*",
-    "lint:oxlint": "oxlint . --fix",
-    "lint:eslint": "eslint . --fix --cache",
-    "format": "oxfmt src/",
+    "build:browser": "vp pack -c tsdown.config.ts",
+    "build:cli": "vp pack -c tsdown.config.cli.ts",
+    "dev": "vp pack --watch",
+    "lint": "vp lint . --fix",
+    "format": "vp fmt src/",
     "prepublishOnly": "nr build",
-    "release": "bumpp",
-    "test": "vitest",
-    "try": "tsx src/cli.ts",
     "type-check": "tsc -b",
-    "up": "taze major -I"
+    "up": "taze major -I",
+    "prepare": "vp config"
   },
   "dependencies": {
-    "@clack/prompts": "^1.1.0",
-    "commander": "^14.0.3",
+    "@clack/prompts": "^1.8.1",
+    "commander": "^15.1.0",
     "fast-glob": "^3.3.3",
     "picocolors": "^1.1.1"
   },
   "devDependencies": {
-    "@antfu/ni": "^29.0.0",
-    "@eslint/js": "^10.0.1",
-    "@types/jsdom": "^28.0.0",
-    "@types/node": "^25.5.0",
-    "@typescript/native-preview": "7.0.0-dev.20260315.1",
-    "bumpp": "^11.0.0",
-    "eslint": "^10.0.3",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-oxlint": "^1.55.0",
-    "eslint-plugin-unicorn": "^63.0.0",
-    "globals": "^17.4.0",
-    "jiti": "^2.6.1",
-    "jsdom": "^29.0.0",
-    "npm-run-all2": "^8.0.4",
-    "oxfmt": "^0.40.0",
-    "oxlint": "^1.55.0",
-    "taze": "^19.10.0",
-    "tsdown": "^0.21.2",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0",
-    "vitest": "^4.1.0"
+    "@types/jsdom": "^30.0.0",
+    "@types/node": "^26.6.6",
+    "jsdom": "^31.0.0",
+    "taze": "^21.3.0",
+    "typescript": "^7.0.2",
+    "vite-plus": "catalog:"
   },
-  "packageManager": "pnpm@10.32.1"
+  "packageManager": "pnpm@12.18.0"
 }
