@@ -38,7 +38,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "nr build:browser && nr build:cli",
+    "build": "vpr build:browser && vpr build:cli",
     "build:browser": "vp pack -c tsdown.config.ts",
     "build:cli": "vp pack -c tsdown.config.cli.ts",
     "dev": "vp pack --watch",
