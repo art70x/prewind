@@ -42,6 +42,7 @@
     "build:browser": "vp pack -c tsdown.config.ts",
     "build:cli": "vp pack -c tsdown.config.cli.ts",
     "dev": "vp pack --watch",
+    "check": "vp check",
     "lint": "vp lint . --fix",
     "format": "vp fmt src/",
     "prepublishOnly": "nr build",
